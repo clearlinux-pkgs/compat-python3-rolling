@@ -1,0 +1,24 @@
+Updating python3 guide:
+- Create compat python package with the current version of python (remove all non minor version specific bits and provides)
+- Rebase patches, validate they apply, fixup those that don't or remove them
+- Get things building without optimizations
+- Turn on the optimizations and tests and validate results
+- Turn optimizations and tests back off before koji
+- Throw compat-python and new python into koji (in that order)
+- run the README.clear from the pypi-flit_core package
+- Update pypi-wheel, pypi-setuptools* and pypi-packaging
+- Autospec + koji pypi-pip, pypi-pbr, pypi-py, pypi-six, pypi-pytest, pypi-pathspec, pypi-pluggy, pypi-trove_classifiers, pypi-hatchling, pypi-tox, pypi-nose, pypi-pyproject_metadata, pypi-cython, pypi-numpy, pypi-coverage, meson, Solaar, sip, scons, mock, nodejs, ldb (fix extras for new filename), pypi-poetry_core, pypi-poetry, pypi-dnspython, pypi-markdown, samba, pypi-meson_python, gobject-introspection, pygobject (fix extras for new filename), pycairo, pypi-pybtex, pypi-yarg, pypi-zope.proxy, talloc, pypi-cffi, pypi-persistent, mpi4py, pypi-pdm_backend, pypi-pdm_pep517, pypi-pdm (in that order, though some aren't dependencies this is just an order that works some can be done in parallel)
+- Autospec + koji OpenIPMI, pymongo, sphinx-feature-classification, stestr, wcwidth, yappi, junit-xml, pypandoc, WebTest, Routes, jarn.viewdoc, repose.sphinx.autointerface, oslo.upgradecheck, flake8-class-newline, ruamel-yaml (in that order)
+- Autospec + koji fontforge, krita, FreeCAD, pytorch, meld, azure-iot-sdk with workaround patch for python3.8
+- drop mozjs, mozjs52, compat-opencv-soname32, compat-opencv-soname33, compat-protobuf-soname14, compat-protobuf-soname15
+- protobuf update to latest (and rebuild its dependencies: CuraEngine, ParaView, R-RProtoBuf, R-protolite, libArcus, mosh, mumble, pdns, pdns-recursor, protobuf-c, sysdig, azure-iot-sdk, ceph, collectd, postgis, quagga)
+- Update mozjs60 with buildreq on python
+- Update manually (update install path) + koji bash_kernel
+- Update manually (rename files, update paths for new python version) + koji boost, opencv
+- ipython remove install_append -> autospec + koji -> (after rebuilding the ecosystem) add back install-append -> autospec + koji
+- Bump + koji all the packages (could do just those that have a spec file with '%files python3' or build require python3)
+- Validate the set builds, and fix whatever does not, may need a few rebuild cycles
+- Once everything is building and a release has been made turn back on the optimizations and tests for the updated python3
+- Make new release with new version of python3 with all the bells and whistles
+- Rebuild any package with avx2/avx512 python binaries
+- The end =)
